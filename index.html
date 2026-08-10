@@ -3,242 +3,151 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ThanhtaEdu - Chuyển HTML sang H5P</title>
+<meta name="author" content="ThanhtaEdu">
+<title>ThanhtaEdu | HTML → H5P Converter</title>
 <style>
 :root{
-  --bg:#f7f8fc;
-  --card:#ffffff;
-  --line:#e5e7eb;
-  --text:#172033;
-  --muted:#7b8494;
-  --blue:#2563eb;
-  --green:#159a86;
-  --violet:#6d4aff;
+  --bg:#f6f7fb; --card:#fff; --text:#172033; --muted:#6b7280;
+  --p1:#4f46e5; --p2:#7c3aed; --line:#e5e7eb; --ok:#059669; --err:#dc2626;
 }
 *{box-sizing:border-box}
 body{
   margin:0;
-  min-height:100vh;
-  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
   background:
-    radial-gradient(circle at 10% 0%,rgba(37,99,235,.08),transparent 28%),
-    radial-gradient(circle at 90% 0%,rgba(109,74,255,.08),transparent 30%),
+    radial-gradient(circle at 15% 10%,rgba(99,102,241,.10),transparent 30%),
+    radial-gradient(circle at 85% 12%,rgba(168,85,247,.10),transparent 32%),
     var(--bg);
-  color:var(--text);
+  color:var(--text)
 }
-.page{
-  min-height:100vh;
-  display:flex;
-  flex-direction:column;
-}
-header{
-  height:66px;
-  display:flex;
-  align-items:center;
-  max-width:940px;
-  width:100%;
-  margin:auto;
-  padding:0 20px;
-}
-.brand-wrap{
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-.logo{
-  width:40px;
-  height:40px;
-  border-radius:12px;
-  display:grid;
-  place-items:center;
-  font-size:21px;
-  background:linear-gradient(135deg,#14b8a6,#0f8f7f);
-  box-shadow:0 8px 18px rgba(20,184,166,.20);
+.wrap{max-width:900px;margin:0 auto;padding:28px 18px 44px}
+.top-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:16px;padding:4px 2px;
 }
 .brand{
-  font-size:23px;
-  font-weight:950;
-  letter-spacing:-.6px;
-  color:var(--green);
+  display:flex;align-items:center;gap:12px;
+  font-weight:900;font-size:24px;letter-spacing:-.02em;color:#158a78;
 }
-.brand span{color:var(--blue)}
-main{
-  width:min(700px,92vw);
-  margin:auto;
-  padding:26px 0 38px;
+.brand-logo{
+  width:42px;height:42px;border-radius:13px;display:grid;place-items:center;
+  background:linear-gradient(135deg,#14b8a6,#0f8f7f);
+  color:#fff;font-size:22px;box-shadow:0 8px 20px rgba(20,184,166,.22);
+}
+.brand-name .edu{color:#2563eb}
+.header-mini{
+  width:38px;height:38px;border-radius:11px;display:grid;place-items:center;
+  background:#fff;border:1px solid #e5e7eb;color:#94a3b8;
+  box-shadow:0 6px 18px rgba(15,23,42,.05);font-size:16px;
+}
+.hero{
+  background:linear-gradient(135deg,#252a67,#4f46e5 52%,#7c3aed);
+  color:white;border-radius:28px;padding:28px;
+  box-shadow:0 22px 55px rgba(79,70,229,.18)
+}
+.hero h1{margin:0;font-size:34px}
+.badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.badge{
+  background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.16);
+  padding:7px 10px;border-radius:999px;font-size:12px;font-weight:700
 }
 .card{
-  background:var(--card);
-  border:1px solid var(--line);
-  border-radius:24px;
-  padding:30px;
-  box-shadow:0 16px 50px rgba(15,23,42,.07);
+  margin-top:18px;background:var(--card);border:1px solid var(--line);
+  border-radius:22px;padding:22px;box-shadow:0 12px 35px rgba(15,23,42,.05)
 }
-h1{
-  margin:0 0 26px;
-  text-align:center;
-  font-size:27px;
-  letter-spacing:-.7px;
-}
-.drop{
-  border:2px dashed #bdc8fa;
-  background:#fafbff;
-  border-radius:18px;
-  padding:34px 18px;
-  text-align:center;
-  transition:.2s;
-  cursor:pointer;
-}
-.drop.drag{
-  border-color:var(--violet);
-  background:#f2f0ff;
-}
-.upload-title{
-  font-weight:900;
-  font-size:17px;
-  margin-bottom:13px;
-}
-input[type=file]{
-  max-width:100%;
-}
-.file-name{
-  margin-top:10px;
-  font-size:12px;
-  font-weight:800;
-  color:var(--blue);
-  word-break:break-all;
-  min-height:16px;
-}
-.field{
-  margin-top:16px;
+.field{margin-top:14px}
+.field:first-child{margin-top:0}
+.field label{
+  display:block;font-size:12px;font-weight:800;color:#475569;margin-bottom:7px
 }
 .field input{
-  width:100%;
-  border:1px solid var(--line);
-  border-radius:13px;
-  padding:13px 14px;
-  font:inherit;
-  outline:none;
-  background:#fff;
+  width:100%;border:1px solid var(--line);border-radius:12px;
+  padding:12px 13px;font:inherit;outline:none
 }
 .field input:focus{
-  border-color:#a9b9ff;
-  box-shadow:0 0 0 3px rgba(79,70,229,.08);
+  border-color:#a5b4fc;box-shadow:0 0 0 3px rgba(99,102,241,.10)
 }
-.hint{
-  margin-top:7px;
-  padding-left:2px;
-  font-size:11px;
-  color:#8b95a7;
+.url-hint{margin-top:7px;font-size:11px;color:#8a94a6}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.btn{
+  border:0;border-radius:13px;padding:12px 16px;font-weight:900;cursor:pointer
 }
-button{
-  width:100%;
-  margin-top:16px;
-  border:0;
-  border-radius:13px;
-  padding:14px 18px;
-  font-size:15px;
-  font-weight:900;
-  color:#fff;
-  cursor:pointer;
-  background:linear-gradient(135deg,#4f46e5,#7c3aed);
+.btn.primary{
+  background:linear-gradient(135deg,var(--p1),var(--p2));color:white
 }
-button:disabled{
-  opacity:.45;
-  cursor:not-allowed;
-}
+.btn.secondary{background:#eef2ff;color:#3730a3}
+.btn:disabled{opacity:.45;cursor:not-allowed}
 .status{
-  min-height:19px;
-  margin-top:12px;
-  text-align:center;
-  font-size:12px;
-  color:var(--muted);
+  margin-top:16px;border-radius:14px;padding:13px 14px;background:#f8fafc;
+  border:1px solid var(--line);font-size:13px;line-height:1.5
 }
-footer{
-  padding:18px 20px 24px;
-  text-align:center;
-  font-size:11px;
-  color:#8c95a5;
-}
-@media(max-width:560px){
-  header{height:58px}
-  .card{padding:22px}
-  h1{font-size:23px}
-}
+.status.ok{background:#ecfdf5;border-color:#a7f3d0;color:#065f46}
+.status.err{background:#fef2f2;border-color:#fecaca;color:#991b1b}
+footer{text-align:center;color:#8a94a6;font-size:12px;margin-top:18px}
+@media(max-width:700px){.hero h1{font-size:28px}}
 </style>
 </head>
 <body>
-<div class="page">
-  <header>
-    <div class="brand-wrap">
-      <div class="logo">🎓</div>
-      <div class="brand">Thanhta<span>Edu</span></div>
+<div class="wrap">
+  <header class="top-header">
+    <div class="brand">
+      <div class="brand-logo">🎓</div>
+      <div class="brand-name">Thanhta<span class="edu">Edu</span></div>
     </div>
+    <div class="header-mini">◧</div>
   </header>
 
-  <main>
-    <div class="card">
-      <h1>Chuyển HTML sang H5P</h1>
-
-      <div class="drop" id="drop">
-        <div class="upload-title">Tải file HTML lên <span style="font-weight:600;color:#8b95a7">(tùy chọn)</span></div>
-        <input id="file" type="file" accept=".html,.htm,text/html">
-        <div class="file-name" id="fileName"></div>
-      </div>
-
-      <div class="field">
-        <input id="url" type="url" placeholder="Link bài HTML đã xuất bản - bắt buộc (https://...)">
-        <div class="hint">Có thể dùng link từ GitHub Pages, Netlify, Cloudflare Pages hoặc Vercel.</div>
-      </div>
-
-      <button id="convert" disabled>Chuyển sang H5P</button>
-      <div class="status" id="status"></div>
+  <section class="hero">
+    <h1>HTML → H5P Converter</h1>
+    <div class="badges">
+      <span class="badge">📦 Xuất .h5p</span>
+      <span class="badge">🇻🇳 Giao diện tiếng Việt</span>
+      <span class="badge">🌐 Nhúng URL</span>
     </div>
-  </main>
+  </section>
+
+  <section class="card">
+    <div class="field">
+      <label>Tiêu đề bài học</label>
+      <input id="title" value="Bài học tương tác">
+    </div>
+
+    <div class="field">
+      <label>Link bài HTML đã xuất bản</label>
+      <input id="url" placeholder="https://...">
+      <div class="url-hint">GitHub Pages, Netlify, Cloudflare Pages hoặc Vercel.</div>
+    </div>
+
+    <div class="actions">
+      <button id="check" class="btn secondary">✓ Kiểm tra</button>
+      <button id="build" class="btn primary" disabled>⬇ Tạo file H5P</button>
+    </div>
+
+    <div id="status" class="status">Sẵn sàng.</div>
+  </section>
 
   <footer>ThanhtaEdu · maithanhta77@gmail.com</footer>
 </div>
 
 <script>
-const fileInput=document.getElementById('file');
-const fileName=document.getElementById('fileName');
-const urlInput=document.getElementById('url');
-const convertBtn=document.getElementById('convert');
-const status=document.getElementById('status');
-const drop=document.getElementById('drop');
+const $ = s => document.querySelector(s);
 
-let selectedFile=null;
-
-function updateButton(){
-  const okUrl=/^https:\/\/.+/i.test(urlInput.value.trim());
-  convertBtn.disabled=!okUrl;
+function setStatus(msg,type=''){
+  const s=$('#status');
+  s.className='status'+(type?' '+type:'');
+  s.textContent=msg;
 }
-function setFile(file){
-  if(!file || !/\.html?$/i.test(file.name)){
-    selectedFile=null;
-    fileName.textContent='';
-    status.textContent='Chỉ nhận file HTML';
-    updateButton();
-    return;
-  }
-  selectedFile=file;
-  fileName.textContent=file.name;
-  status.textContent='';
-  updateButton();
-}
-fileInput.addEventListener('change',e=>setFile(e.target.files[0]));
-urlInput.addEventListener('input',updateButton);
+function validUrl(){return /^https:\/\/.+/i.test($('#url').value.trim())}
+function updateBuild(){$('#build').disabled=!validUrl()}
 
-['dragenter','dragover'].forEach(ev=>drop.addEventListener(ev,e=>{
-  e.preventDefault();
-  drop.classList.add('drag');
-}));
-['dragleave','drop'].forEach(ev=>drop.addEventListener(ev,e=>{
-  e.preventDefault();
-  drop.classList.remove('drag');
-}));
-drop.addEventListener('drop',e=>setFile(e.dataTransfer.files[0]));
+$('#url').addEventListener('input',updateBuild);
 
+$('#check').addEventListener('click',()=>{
+  const ok=validUrl();
+  setStatus(ok?'Link hợp lệ. Có thể tạo H5P.':'Vui lòng nhập link HTTPS hợp lệ.',ok?'ok':'err');
+});
+
+/* ZIP writer */
 const crcTable=(()=>{
   let c,t=[];
   for(let n=0;n<256;n++){
@@ -251,13 +160,12 @@ const crcTable=(()=>{
 function crc32(bytes){
   let c=0xffffffff;
   for(let i=0;i<bytes.length;i++) c=crcTable[(c^bytes[i])&255]^(c>>>8);
-  return (c^0xffffffff)>>>0;
+  return(c^0xffffffff)>>>0;
 }
 const u16=n=>new Uint8Array([n&255,(n>>>8)&255]);
 const u32=n=>new Uint8Array([n&255,(n>>>8)&255,(n>>>16)&255,(n>>>24)&255]);
 function concat(parts){
-  const len=parts.reduce((a,b)=>a+b.length,0);
-  const out=new Uint8Array(len);
+  const len=parts.reduce((a,b)=>a+b.length,0),out=new Uint8Array(len);
   let p=0;
   for(const x of parts){out.set(x,p);p+=x.length}
   return out;
@@ -272,20 +180,13 @@ function makeZip(files){
   const enc=new TextEncoder(),locals=[],centrals=[];
   let offset=0;
   const [tm,dt]=dos();
-
   for(const f of files){
-    const name=enc.encode(f.name);
-    const data=enc.encode(f.data);
-    const crc=crc32(data);
-    const flag=0x0800;
-
+    const name=enc.encode(f.name),data=enc.encode(f.data),crc=crc32(data),flag=0x0800;
     const local=concat([
       u32(0x04034b50),u16(20),u16(flag),u16(0),u16(tm),u16(dt),
-      u32(crc),u32(data.length),u32(data.length),u16(name.length),u16(0),
-      name,data
+      u32(crc),u32(data.length),u32(data.length),u16(name.length),u16(0),name,data
     ]);
     locals.push(local);
-
     const central=concat([
       u32(0x02014b50),u16(20),u16(20),u16(flag),u16(0),u16(tm),u16(dt),
       u32(crc),u32(data.length),u32(data.length),u16(name.length),u16(0),
@@ -294,45 +195,28 @@ function makeZip(files){
     centrals.push(central);
     offset+=local.length;
   }
-
-  const localData=concat(locals);
-  const centralData=concat(centrals);
+  const localData=concat(locals),centralData=concat(centrals);
   const end=concat([
     u32(0x06054b50),u16(0),u16(0),u16(files.length),u16(files.length),
     u32(centralData.length),u32(localData.length),u16(0)
   ]);
-
   return new Blob([localData,centralData,end],{type:'application/zip'});
 }
 function safeName(s){
-  return (s||'bai_hoc')
-    .replace(/[\\/:*?"<>|]+/g,'_')
-    .replace(/\s+/g,'_')
-    .slice(0,90);
+  return (s||'bai_hoc').replace(/[\\/:*?"<>|]+/g,'_').replace(/\s+/g,'_').slice(0,90);
 }
 
-convertBtn.addEventListener('click',async()=>{
-  const url=urlInput.value.trim();
-  if(!/^https:\/\/.+/i.test(url)){
-    status.textContent='Link HTTPS chưa hợp lệ';
+$('#build').addEventListener('click',()=>{
+  if(!validUrl()){
+    setStatus('Vui lòng nhập link HTTPS hợp lệ.','err');
     return;
   }
 
-  let title='Bài học tương tác';
-  if(selectedFile){
-    const raw=await selectedFile.text();
-    const doc=new DOMParser().parseFromString(raw,'text/html');
-    title=(doc.querySelector('title')?.textContent || selectedFile.name.replace(/\.html?$/i,'') || title).trim();
-  }else{
-    try{
-      const u=new URL(url);
-      const last=u.pathname.split('/').filter(Boolean).pop();
-      if(last) title=decodeURIComponent(last).replace(/[-_]+/g,' ');
-    }catch(e){}
-  }
+  const title=$('#title').value.trim()||'Bài học tương tác';
+  const url=$('#url').value.trim();
 
   const h5p={
-    title:title||'Bài học tương tác',
+    title,
     language:'vi',
     mainLibrary:'H5P.IFrameEmbed',
     embedTypes:['div'],
@@ -344,8 +228,8 @@ convertBtn.addEventListener('click',async()=>{
   };
 
   const content={
-    width:'100%',
-    height:'720px',
+    width:'900px',
+    height:'900px',
     minWidth:'320px',
     source:url,
     resizeSupported:true
@@ -361,13 +245,9 @@ convertBtn.addEventListener('click',async()=>{
   a.download=safeName(title)+'.h5p';
   document.body.appendChild(a);
   a.click();
+  setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1200);
 
-  setTimeout(()=>{
-    URL.revokeObjectURL(a.href);
-    a.remove();
-  },1200);
-
-  status.textContent='Đã tạo file H5P';
+  setStatus('Đã tạo file H5P.','ok');
 });
 </script>
 </body>
