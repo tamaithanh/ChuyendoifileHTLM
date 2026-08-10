@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ThanhtaEdu - Chuyển HTML sang H5P</title>
+<style>
+:root{
+  --bg:#f7f8fc;
+  --card:#ffffff;
+  --line:#e5e7eb;
+  --text:#172033;
+  --muted:#7b8494;
+  --blue:#2563eb;
+  --green:#159a86;
+  --violet:#6d4aff;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  min-height:100vh;
+  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  background:
+    radial-gradient(circle at 10% 0%,rgba(37,99,235,.08),transparent 28%),
+    radial-gradient(circle at 90% 0%,rgba(109,74,255,.08),transparent 30%),
+    var(--bg);
+  color:var(--text);
+}
+.page{
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+}
+header{
+  height:66px;
+  display:flex;
+  align-items:center;
+  max-width:940px;
+  width:100%;
+  margin:auto;
+  padding:0 20px;
+}
+.brand-wrap{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.logo{
+  width:40px;
+  height:40px;
+  border-radius:12px;
+  display:grid;
+  place-items:center;
+  font-size:21px;
+  background:linear-gradient(135deg,#14b8a6,#0f8f7f);
+  box-shadow:0 8px 18px rgba(20,184,166,.20);
+}
+.brand{
+  font-size:23px;
+  font-weight:950;
+  letter-spacing:-.6px;
+  color:var(--green);
+}
+.brand span{color:var(--blue)}
+main{
+  width:min(700px,92vw);
+  margin:auto;
+  padding:26px 0 38px;
+}
+.card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:24px;
+  padding:30px;
+  box-shadow:0 16px 50px rgba(15,23,42,.07);
+}
+h1{
+  margin:0 0 26px;
+  text-align:center;
+  font-size:27px;
+  letter-spacing:-.7px;
+}
+.drop{
+  border:2px dashed #bdc8fa;
+  background:#fafbff;
+  border-radius:18px;
+  padding:34px 18px;
+  text-align:center;
+  transition:.2s;
+  cursor:pointer;
+}
+.drop.drag{
+  border-color:var(--violet);
+  background:#f2f0ff;
+}
+.upload-title{
+  font-weight:900;
+  font-size:17px;
+  margin-bottom:13px;
+}
+input[type=file]{
+  max-width:100%;
+}
+.file-name{
+  margin-top:10px;
+  font-size:12px;
+  font-weight:800;
+  color:var(--blue);
+  word-break:break-all;
+  min-height:16px;
+}
+.field{
+  margin-top:16px;
+}
+.field input{
+  width:100%;
+  border:1px solid var(--line);
+  border-radius:13px;
+  padding:13px 14px;
+  font:inherit;
+  outline:none;
+  background:#fff;
+}
+.field input:focus{
+  border-color:#a9b9ff;
+  box-shadow:0 0 0 3px rgba(79,70,229,.08);
+}
+.hint{
+  margin-top:7px;
+  padding-left:2px;
+  font-size:11px;
+  color:#8b95a7;
+}
+button{
+  width:100%;
+  margin-top:16px;
+  border:0;
+  border-radius:13px;
+  padding:14px 18px;
+  font-size:15px;
+  font-weight:900;
+  color:#fff;
+  cursor:pointer;
+  background:linear-gradient(135deg,#4f46e5,#7c3aed);
+}
+button:disabled{
+  opacity:.45;
+  cursor:not-allowed;
+}
+.status{
+  min-height:19px;
+  margin-top:12px;
+  text-align:center;
+  font-size:12px;
+  color:var(--muted);
+}
+footer{
+  padding:18px 20px 24px;
+  text-align:center;
+  font-size:11px;
+  color:#8c95a5;
+}
+@media(max-width:560px){
+  header{height:58px}
+  .card{padding:22px}
+  h1{font-size:23px}
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <div class="brand-wrap">
+      <div class="logo">🎓</div>
+      <div class="brand">Thanhta<span>Edu</span></div>
+    </div>
+  </header>
+
+  <main>
+    <div class="card">
+      <h1>Chuyển HTML sang H5P</h1>
+
+      <div class="drop" id="drop">
+        <div class="upload-title">Tải file HTML lên <span style="font-weight:600;color:#8b95a7">(tùy chọn)</span></div>
+        <input id="file" type="file" accept=".html,.htm,text/html">
+        <div class="file-name" id="fileName"></div>
+      </div>
+
+      <div class="field">
+        <input id="url" type="url" placeholder="Link bài HTML đã xuất bản - bắt buộc (https://...)">
+        <div class="hint">Có thể dùng link từ GitHub Pages, Netlify, Cloudflare Pages hoặc Vercel.</div>
+      </div>
+
+      <button id="convert" disabled>Chuyển sang H5P</button>
+      <div class="status" id="status"></div>
+    </div>
+  </main>
+
+  <footer>ThanhtaEdu · maithanhta77@gmail.com</footer>
+</div>
+
+<script>
+const fileInput=document.getElementById('file');
+const fileName=document.getElementById('fileName');
+const urlInput=document.getElementById('url');
+const convertBtn=document.getElementById('convert');
+const status=document.getElementById('status');
+const drop=document.getElementById('drop');
+
+let selectedFile=null;
+
+function updateButton(){
+  const okUrl=/^https:\/\/.+/i.test(urlInput.value.trim());
+  convertBtn.disabled=!okUrl;
+}
+function setFile(file){
+  if(!file || !/\.html?$/i.test(file.name)){
+    selectedFile=null;
+    fileName.textContent='';
+    status.textContent='Chỉ nhận file HTML';
+    updateButton();
+    return;
+  }
+  selectedFile=file;
+  fileName.textContent=file.name;
+  status.textContent='';
+  updateButton();
+}
+fileInput.addEventListener('change',e=>setFile(e.target.files[0]));
+urlInput.addEventListener('input',updateButton);
+
+['dragenter','dragover'].forEach(ev=>drop.addEventListener(ev,e=>{
+  e.preventDefault();
+  drop.classList.add('drag');
+}));
+['dragleave','drop'].forEach(ev=>drop.addEventListener(ev,e=>{
+  e.preventDefault();
+  drop.classList.remove('drag');
+}));
+drop.addEventListener('drop',e=>setFile(e.dataTransfer.files[0]));
+
+const crcTable=(()=>{
+  let c,t=[];
+  for(let n=0;n<256;n++){
+    c=n;
+    for(let k=0;k<8;k++) c=(c&1)?(0xEDB88320^(c>>>1)):(c>>>1);
+    t[n]=c>>>0;
+  }
+  return t;
+})();
+function crc32(bytes){
+  let c=0xffffffff;
+  for(let i=0;i<bytes.length;i++) c=crcTable[(c^bytes[i])&255]^(c>>>8);
+  return (c^0xffffffff)>>>0;
+}
+const u16=n=>new Uint8Array([n&255,(n>>>8)&255]);
+const u32=n=>new Uint8Array([n&255,(n>>>8)&255,(n>>>16)&255,(n>>>24)&255]);
+function concat(parts){
+  const len=parts.reduce((a,b)=>a+b.length,0);
+  const out=new Uint8Array(len);
+  let p=0;
+  for(const x of parts){out.set(x,p);p+=x.length}
+  return out;
+}
+function dos(d=new Date()){
+  return [
+    ((d.getHours()&31)<<11)|((d.getMinutes()&63)<<5)|(Math.floor(d.getSeconds()/2)&31),
+    (((d.getFullYear()-1980)&127)<<9)|(((d.getMonth()+1)&15)<<5)|(d.getDate()&31)
+  ];
+}
+function makeZip(files){
+  const enc=new TextEncoder(),locals=[],centrals=[];
+  let offset=0;
+  const [tm,dt]=dos();
+
+  for(const f of files){
+    const name=enc.encode(f.name);
+    const data=enc.encode(f.data);
+    const crc=crc32(data);
+    const flag=0x0800;
+
+    const local=concat([
+      u32(0x04034b50),u16(20),u16(flag),u16(0),u16(tm),u16(dt),
+      u32(crc),u32(data.length),u32(data.length),u16(name.length),u16(0),
+      name,data
+    ]);
+    locals.push(local);
+
+    const central=concat([
+      u32(0x02014b50),u16(20),u16(20),u16(flag),u16(0),u16(tm),u16(dt),
+      u32(crc),u32(data.length),u32(data.length),u16(name.length),u16(0),
+      u16(0),u16(0),u16(0),u32(0),u32(offset),name
+    ]);
+    centrals.push(central);
+    offset+=local.length;
+  }
+
+  const localData=concat(locals);
+  const centralData=concat(centrals);
+  const end=concat([
+    u32(0x06054b50),u16(0),u16(0),u16(files.length),u16(files.length),
+    u32(centralData.length),u32(localData.length),u16(0)
+  ]);
+
+  return new Blob([localData,centralData,end],{type:'application/zip'});
+}
+function safeName(s){
+  return (s||'bai_hoc')
+    .replace(/[\\/:*?"<>|]+/g,'_')
+    .replace(/\s+/g,'_')
+    .slice(0,90);
+}
+
+convertBtn.addEventListener('click',async()=>{
+  const url=urlInput.value.trim();
+  if(!/^https:\/\/.+/i.test(url)){
+    status.textContent='Link HTTPS chưa hợp lệ';
+    return;
+  }
+
+  let title='Bài học tương tác';
+  if(selectedFile){
+    const raw=await selectedFile.text();
+    const doc=new DOMParser().parseFromString(raw,'text/html');
+    title=(doc.querySelector('title')?.textContent || selectedFile.name.replace(/\.html?$/i,'') || title).trim();
+  }else{
+    try{
+      const u=new URL(url);
+      const last=u.pathname.split('/').filter(Boolean).pop();
+      if(last) title=decodeURIComponent(last).replace(/[-_]+/g,' ');
+    }catch(e){}
+  }
+
+  const h5p={
+    title:title||'Bài học tương tác',
+    language:'vi',
+    mainLibrary:'H5P.IFrameEmbed',
+    embedTypes:['div'],
+    license:'U',
+    authors:[{name:'ThanhtaEdu',role:'Author'}],
+    preloadedDependencies:[
+      {machineName:'H5P.IFrameEmbed',majorVersion:1,minorVersion:0}
+    ]
+  };
+
+  const content={
+    width:'100%',
+    height:'720px',
+    minWidth:'320px',
+    source:url,
+    resizeSupported:true
+  };
+
+  const blob=makeZip([
+    {name:'h5p.json',data:JSON.stringify(h5p,null,2)},
+    {name:'content/content.json',data:JSON.stringify(content,null,2)}
+  ]);
+
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=safeName(title)+'.h5p';
+  document.body.appendChild(a);
+  a.click();
+
+  setTimeout(()=>{
+    URL.revokeObjectURL(a.href);
+    a.remove();
+  },1200);
+
+  status.textContent='Đã tạo file H5P';
+});
+</script>
+</body>
+</html>
